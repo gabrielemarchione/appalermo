@@ -14,8 +14,9 @@ import java.util.UUID;
 public class PrenotazioneBiglietto implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue()
+    @Column
+    private UUID prenotazioneBigliettoId;
 
     @ManyToOne
     @JoinColumn(name = "prenotazione_id", nullable = false)
