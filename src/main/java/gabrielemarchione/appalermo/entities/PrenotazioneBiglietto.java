@@ -14,8 +14,8 @@ import java.util.UUID;
 public class PrenotazioneBiglietto implements Serializable {
 
     @Id
-    @GeneratedValue()
-    @Column
+    @GeneratedValue
+    @Column(name = "prenotazione_biglietti_id")
     private UUID prenotazioneBigliettoId;
 
     @ManyToOne
