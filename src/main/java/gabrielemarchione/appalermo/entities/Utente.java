@@ -3,6 +3,9 @@ package gabrielemarchione.appalermo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -40,17 +44,18 @@ public class Utente implements UserDetails {
     @Setter (AccessLevel.NONE)
     private List<RuoloUtente> ruoli;
 
-public Utente(UUID utenteId, String username, String email, String password, String nome, String cognome, String ruolo) {
-    this.utenteId = utenteId;
+public Utente( String username, String email, String password, String nome, String cognome) {
     this.username = username;
     this.email = email;
     this.password = password;
     this.nome = nome;
+    this.cognome = cognome;
     this.avatarUrl = "https://ui-avatars.com/api/?name=" +
             nome + "+" + cognome;
-    this.cognome = cognome;
-    this.ruolo = ruolo;
+    this.ruoli = new ArrayList<>();
 }
+
+
 
     public void addRuolo(RuoloUtente ruoloUtente) {
         this.ruoli.add(ruoloUtente);
