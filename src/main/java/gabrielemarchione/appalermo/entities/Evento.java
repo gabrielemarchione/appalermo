@@ -36,32 +36,34 @@ public class Evento {
     @Column
     private double costo;
     @Column
-    private int posti_massimi;
+    private int postiMassimi;
+    @Column
+    private int postiDisponibili;
     @Enumerated(EnumType.STRING)
     private CategoriaEvento categoriaEvento;
 
+
     @ManyToOne
-    @JoinColumn(name = "utente_id", nullable = false)
-    private Utente utente;
+    @JoinColumn(name = "organizzatore_id", nullable = false)
+    private Utente organizzatore;
+
 
     @OneToMany(mappedBy = "evento" )
     private List<Prenotazione> prenotazioni;
 
-    @OneToMany(mappedBy = "evento")
-    private List <Biglietto> biglietti;
-
     @OneToMany (mappedBy = "evento")
     private List<Feedback> feedbacks;
 
-    public Evento(String descrizione, String titolo, LocalDate data, String luogo, double costo, int posti_massimi, CategoriaEvento categoriaEvento, Utente utente) {
+    public Evento(String descrizione, String titolo, LocalDate data, String luogo, double costo, int postiMassimi, int postiDisponibili, CategoriaEvento categoriaEvento, Utente organizzatore) {
         this.descrizione = descrizione;
         this.titolo = titolo;
         this.data = data;
         this.luogo = luogo;
         this.costo = costo;
-        this.posti_massimi = posti_massimi;
+        this.postiMassimi = postiMassimi;
+        this.postiDisponibili = postiDisponibili;
         this.categoriaEvento = categoriaEvento;
-        this.utente = utente;
+        this.organizzatore = organizzatore;
     }
 
 
