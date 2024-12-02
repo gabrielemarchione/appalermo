@@ -54,7 +54,7 @@ public class EventoService {
                  body.postiMassimi(), body.postiDisponibili(), body.categoriaEvento(), organizzatore));
     }
 
-    public List<Evento> findAllEventByOrganizzatore(Utente organizzatore) {
+    public List<Evento> findAllEventoByOrganizzatore(Utente organizzatore) {
         return eventoRepository.findByOrganizzatore(organizzatore);
     }
 

@@ -40,7 +40,7 @@ public class UtenteService {
         return utenteRepository.findById(utenteId).orElseThrow(() -> new NotFoundException("Utente con id " + utenteId + " non trovato"));
     }
 
-    public Page<Utente> getAllUsers(int page, int size, String sortBy) {
+    public Page<Utente> getAllUtenti(int page, int size, String sortBy) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return utenteRepository.findAll(pageable);
     }
