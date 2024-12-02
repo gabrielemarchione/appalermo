@@ -1,6 +1,7 @@
 package gabrielemarchione.appalermo.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gabrielemarchione.appalermo.entities.enums.CategoriaEvento;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -49,6 +50,7 @@ public class Evento {
 
 
     @OneToMany(mappedBy = "evento" )
+    @JsonIgnore
     private List<Prenotazione> prenotazioni;
 
     @OneToMany (mappedBy = "evento")

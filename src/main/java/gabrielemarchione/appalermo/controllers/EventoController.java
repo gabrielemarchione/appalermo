@@ -21,20 +21,20 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/evento")
 public class EventoController {
     @Autowired
     private EventoService eventoService;
 
     @GetMapping
-    public Page<Evento> getAllEvents(@RequestParam(defaultValue = "0") int page,
+    public Page<Evento> getAllEvento(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size,
-                                     @RequestParam(defaultValue = "date") String sortBy) {
+                                     @RequestParam(defaultValue = "data") String sortBy) {
         return eventoService.findAllEvento(page, size, sortBy);
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
+    @PreAuthorize("hasAnyAuthority('ORGANIZZATORE','ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Evento saveEvento(@AuthenticationPrincipal Utente organizzatore, @RequestBody @Validated EventoDTO body,
                              BindingResult bindingResult) {
@@ -47,13 +47,13 @@ public class EventoController {
     }
 
     @GetMapping("/imieieventi")
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
+    @PreAuthorize("hasAnyAuthority('ORGANIZZATORE','ADMIN')")
     public List<Evento> getAllOrganizerEvents(@AuthenticationPrincipal Utente organizzatore) {
         return eventoService.findAllEventoByOrganizzatore(organizzatore);
     }
 
     @PutMapping("/imieieventi/{eventoId}")
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
+    @PreAuthorize("hasAnyAuthority('ORGANIZZATORE','ADMIN')")
     public Evento modifyEvent(@AuthenticationPrincipal Utente organizzatore, @RequestBody @Validated EventoDTO body,
                              BindingResult bindingResult, @PathVariable UUID eventoId) {
         if (bindingResult.hasErrors()) {
@@ -66,7 +66,7 @@ public class EventoController {
 
     @DeleteMapping("/imieieventi/{eventoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
+    @PreAuthorize("hasAnyAuthority('ORGANIZZATORE', 'ADMIN')")
     public void deleteEvent(@AuthenticationPrincipal Utente organizzatore, @PathVariable UUID eventoId) {
         eventoService.deleteEvento(eventoId, organizzatore);
     }

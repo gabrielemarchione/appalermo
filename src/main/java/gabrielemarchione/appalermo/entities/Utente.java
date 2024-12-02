@@ -1,6 +1,7 @@
     package gabrielemarchione.appalermo.entities;
 
 
+    import com.fasterxml.jackson.annotation.JsonIgnore;
     import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     import jakarta.persistence.*;
     import lombok.AccessLevel;
@@ -33,21 +34,25 @@
         @Column (name = "avatar_url", nullable = false)
         private String avatarUrl;
 
-        @Column (name = "ruolo_id")
-        private String ruolo;
 
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "utenti_ruoli", joinColumns = @JoinColumn(name = "utente_id"), inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
         @Setter (AccessLevel.NONE)
-        private List<RuoloUtente>ruoli = new ArrayList<>();
+        private List<RuoloUtente>ruoli;
 
         @OneToMany(mappedBy = "utente")
-        private List<Prenotazione> prenotazioni;
+        @JsonIgnore
+        @Setter(AccessLevel.NONE)
+        private List<Prenotazione>prenotazioni;
 
         @OneToMany(mappedBy = "organizzatore")
-        private List<Evento> eventi;
+        @JsonIgnore
+        @Setter(AccessLevel.NONE)
+        private List<Evento>eventi;
 
         @OneToMany(mappedBy = "utente")
+        @JsonIgnore
+        @Setter (AccessLevel.NONE)
         private List<Feedback>feedbacks;
 
 
@@ -65,9 +70,7 @@
 
 
         public void addRuolo(RuoloUtente ruoloUtente) {
-            if (!this.ruoli.contains(ruoloUtente)) {
-                this.ruoli.add(ruoloUtente);
-            }
+            this.ruoli.add(ruoloUtente);
         }
 
         @Override

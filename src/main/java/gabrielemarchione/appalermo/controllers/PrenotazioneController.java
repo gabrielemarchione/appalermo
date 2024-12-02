@@ -30,7 +30,7 @@ public class PrenotazioneController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Prenotazione> getAllPrenotazioni(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size,
-                                            @RequestParam(defaultValue = "event.date") String sortBy) {
+                                            @RequestParam(defaultValue = "evento.data") String sortBy) {
         return prenotazioneService.findAllPrenotazioni(page, size, sortBy);
     }
 
@@ -58,7 +58,7 @@ public class PrenotazioneController {
         return prenotazioneService.findPrenotazioneByUtente(current);
     }
 
-    @DeleteMapping("/mybookings/{prenotazioneId}")
+    @DeleteMapping("/lemieprenotazioni/{prenotazioneId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePrenotazione(@AuthenticationPrincipal Utente current, @PathVariable UUID prenotazioneId) {
         prenotazioneService.cancellaPrenotazioneById(prenotazioneId, current);

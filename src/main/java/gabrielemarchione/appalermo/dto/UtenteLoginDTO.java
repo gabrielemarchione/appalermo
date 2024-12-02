@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record UtenteLoginDTO(@NotEmpty(message = "Lo username deve essere fornito")
-                             @Size(min = 4, max = 16, message = "Lo username deve essere tra 4 caratteri e 16 " +
+                             @Size(min = 4, max = 25, message = "Lo username deve essere tra 4 caratteri e 25 " +
                                      "caratteri")
                              String username,
                              @NotEmpty(message = "La password deve essere fornita")

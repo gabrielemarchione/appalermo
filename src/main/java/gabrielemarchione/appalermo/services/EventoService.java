@@ -73,8 +73,8 @@ public class EventoService {
         Evento cercato =  getEventoById(eventoId);
         if (!cercato.getOrganizzatore().getUtenteId().equals(organizzatore.getUtenteId()))
             throw new AuthDeniedException("Non sei autorizzato a cancellare l'evento");
-        if (cercato.getPrenotazioni() != null)
-            throw new BadRequestException("Ci sono già prenotazioni, non puoi cancellare l'evento");
+        /*if (cercato.getPrenotazioni() != null)
+            throw new BadRequestException("Ci sono già prenotazioni, non puoi cancellare l'evento");*/
         eventoRepository.delete(cercato);
     }
 }

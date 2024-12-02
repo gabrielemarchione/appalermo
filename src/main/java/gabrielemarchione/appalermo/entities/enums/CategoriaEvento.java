@@ -2,7 +2,7 @@ package gabrielemarchione.appalermo.entities.enums;
 
 
 public enum CategoriaEvento {
-    MUSICALE,
+    MUSICA,
     TEATRO,
     CINEMA,
     MOSTRA_ARTE,
