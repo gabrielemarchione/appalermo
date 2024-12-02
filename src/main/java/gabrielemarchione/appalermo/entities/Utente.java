@@ -71,6 +71,18 @@
         }
 
         @Override
+        public String toString() {
+            return "Utente{" +
+                    "utenteId=" + utenteId +
+                    ", username='" + username + '\'' +
+                    ", nome='" + nome + '\'' +
+                    ", cognome='" + cognome + '\'' +
+                    ", email='" + email + '\'' +
+                    ", ruoli=" + ruoli +
+                    '}';
+        }
+
+        @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return ruoli.stream().map(ruoloUtente -> new SimpleGrantedAuthority(ruoloUtente.getNome())).toList();
         }

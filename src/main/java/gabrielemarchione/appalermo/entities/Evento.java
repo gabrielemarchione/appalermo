@@ -66,5 +66,18 @@ public class Evento {
         this.organizzatore = organizzatore;
     }
 
-
+    @Override
+    public String toString() {
+        return "Evento{" +
+                "eventoId=" + eventoId +
+                ", titolo='" + titolo + '\'' +
+                ", descrizione='" + descrizione + '\'' +
+                ", data=" + data +
+                ", luogo='" + luogo + '\'' +
+                ", costo=" + costo +
+                ", postiMassimi=" + postiMassimi +
+                ", categoriaEvento=" + categoriaEvento +
+                ", organizzatore=" + organizzatore +
+                '}';
+    }
 }

@@ -18,6 +18,7 @@ public class Prenotazione {
     @Id
     @GeneratedValue
     @Setter (AccessLevel.NONE)
+
     @Column (name = "prenotazione_id")
     private UUID prenotazioneId;
 
@@ -36,10 +37,19 @@ public class Prenotazione {
     @JoinColumn (name = "evento_id", nullable = false)
     private Evento evento;
 
-    public Prenotazione(int postiPrenotati, int prezzoTotale, Utente utente, Evento evento) {
+    public Prenotazione(int postiPrenotati, Utente utente, Evento evento) {
         this.postiPrenotati = postiPrenotati;
-        this.prezzoTotale = prezzoTotale;
         this.utente = utente;
         this.evento = evento;
+    }
+
+    @Override
+    public String toString() {
+        return "Prenotazione{" +
+                "prenotazioneId=" + prenotazioneId +
+                ", postiPrenotati=" + postiPrenotati +
+                ", utente=" + utente +
+                ", evento=" + evento +
+                '}';
     }
 }
