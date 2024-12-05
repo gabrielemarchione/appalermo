@@ -51,6 +51,7 @@ public class adminDbRunner implements CommandLineRunner {
         ruoloUtenteService.saveRuoloUtente(organizzatore);
         ruoloUtenteService.saveRuoloUtente(user);
     }
+
     @Override
     public void run(String... args) throws Exception {
         if (ruoloUtenteService.findAll().isEmpty()) populateRuoli();
