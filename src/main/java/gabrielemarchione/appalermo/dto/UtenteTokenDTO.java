@@ -1,4 +1,6 @@
 package gabrielemarchione.appalermo.dto;
 
-public record UtenteTokenDTO(String token) {
+import java.util.List;
+
+public record UtenteTokenDTO(String token ) {
 }

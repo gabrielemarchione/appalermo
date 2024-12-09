@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record UtenteDTO(@NotEmpty(message = "Lo username deve essere fornito")
-                        @Size(min = 4, max = 16, message = "Lo username deve essere tra 4 caratteri e 16 caratteri")
+                        @Size(min = 4, max = 22, message = "Lo username deve essere tra 4 caratteri e 22 caratteri")
                         String username,
                         @NotEmpty(message = "La password deve essere fornita")
                         @Pattern(regexp = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#!$%^&+=]).*$",

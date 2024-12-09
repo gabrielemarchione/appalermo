@@ -33,8 +33,13 @@ public class SecurityConfig {
         httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
         httpSecurity.sessionManagement(httpSecuritySessionManagementConfigurer ->
                 httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+
         httpSecurity.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
+
                 authorizationManagerRequestMatcherRegistry.requestMatchers("/**").permitAll());
+
+
         httpSecurity.cors(Customizer.withDefaults());
         httpSecurity.addFilterBefore(filterChainExceptionHandler, LogoutFilter.class);
         return httpSecurity.build();

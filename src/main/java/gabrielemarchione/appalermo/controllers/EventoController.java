@@ -33,7 +33,7 @@ public class EventoController {
         return eventoService.findAllEvento(page, size, sortBy);
     }
 
-    @PostMapping
+    @PostMapping("/crea")
     @PreAuthorize("hasAnyAuthority('ORGANIZZATORE','ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Evento saveEvento(@AuthenticationPrincipal Utente organizzatore, @RequestBody @Validated EventoDTO body,

@@ -24,7 +24,7 @@ public class AuthController {
     @Autowired
     private UtenteService utenteService;
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     public Utente registraUser(@RequestBody @Validated UtenteDTO body, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -37,12 +37,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public UtenteTokenDTO login(@RequestBody @Validated UtenteLoginDTO body, BindingResult bindingResult) {
+    public UtenteTokenDTO login(@RequestBody @Validated UtenteLoginDTO body, BindingResult bindingResult) throws BadRequestException{
         if (bindingResult.hasErrors()) {
             String message =
                     bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.joining(
                             ", "));
-            throw new BadRequestException(message);
+            throw new BadRequestException("password sbagliata");
         }
         return new UtenteTokenDTO(authService.generaToken(body));
     }

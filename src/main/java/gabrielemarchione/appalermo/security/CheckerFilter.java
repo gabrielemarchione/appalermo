@@ -30,13 +30,16 @@ public class CheckerFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer "))
             throw new UnauthorizedException("Authorization header non fornito o fornito nel formato errato");
         String token = authHeader.replace("Bearer ", "");
         jwt.verificaToken(token);
+
         String utenteId = jwt.estraiUtenteIdDalToken(token);
         Utente loggato = utenteService.findUtenteById(UUID.fromString(utenteId));
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(loggato, null,
                 loggato.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -45,9 +48,8 @@ public class CheckerFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        AntPathMatcher pathMatcher = new AntPathMatcher();
-        return pathMatcher.match("/auth/**", request.getServletPath()) ||
-                pathMatcher.match("/evento/**", request.getServletPath());
+        return new AntPathMatcher().match("/auth/**", request.getServletPath()) ||
+                new AntPathMatcher().match("/evento", request.getServletPath());
     }
 
 }

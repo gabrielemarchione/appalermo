@@ -1,6 +1,7 @@
 package gabrielemarchione.appalermo.tools;
 
 
+import gabrielemarchione.appalermo.entities.RuoloUtente;
 import gabrielemarchione.appalermo.entities.Utente;
 import gabrielemarchione.appalermo.exceptions.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JWT {
@@ -16,10 +19,14 @@ public class JWT {
     private String secret;
 
     public String generaToken(Utente utente) {
+        // mi recupero i ruoli di quell'utente
+
         return Jwts.builder()
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 24))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 12)) //12h
                 .subject(String.valueOf(utente.getUtenteId()))
+                .claim("nome", utente.getNome())
+                .claim("ruoli", utente.getRuoli().stream().map(RuoloUtente::getNome).collect(Collectors.toList()))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
     }
