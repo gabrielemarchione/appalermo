@@ -55,6 +55,9 @@ public class EventoService {
     }
 
     public List<Evento> findAllEventoByOrganizzatore(Utente organizzatore) {
+        if (organizzatore.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ADMIN"))){
+            return eventoRepository.findAll();
+        }
         return eventoRepository.findByOrganizzatore(organizzatore);
     }
 
