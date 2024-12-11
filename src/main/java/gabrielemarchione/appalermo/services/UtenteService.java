@@ -4,8 +4,10 @@ package gabrielemarchione.appalermo.services;
 import com.cloudinary.Cloudinary;
 
 import com.cloudinary.utils.ObjectUtils;
+import gabrielemarchione.appalermo.dto.CambioPasswordDTO;
 import gabrielemarchione.appalermo.dto.RuoloUtenteDTO;
 import gabrielemarchione.appalermo.dto.UtenteDTO;
+import gabrielemarchione.appalermo.dto.UtenteLoggatoDTO;
 import gabrielemarchione.appalermo.entities.RuoloUtente;
 import gabrielemarchione.appalermo.entities.Utente;
 import gabrielemarchione.appalermo.exceptions.BadRequestException;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -89,6 +92,47 @@ public class UtenteService {
         searched.setCognome(body.cognome());
         return utenteRepository.save(searched);
     }
+
+
+    public Utente modifiyUtenteLoggatoAndUpdate(UUID utenteId, UtenteLoggatoDTO body) {
+        Utente searched = findUtenteById(utenteId);
+        if (!searched.getCognome().equals(body.cognome()) || !searched.getNome().equals(body.nome())) {
+            if (searched.getAvatarUrl().equals("https://ui-avatars.com/api/?name=" + searched.getNome() + "+" + searched.getCognome()))
+                searched.setAvatarUrl("https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome());
+        }
+        if (!body.username().equals(searched.getUsername())) {
+            if (utenteRepository.existsByUsername(body.username()))
+                throw new BadRequestException("Username already in use");
+            searched.setUsername(body.username());
+        }
+        if (!body.email().equals(searched.getEmail())) {
+            if (utenteRepository.existsByEmail(body.email())) throw new BadRequestException("Email already in use");
+            searched.setEmail(body.email());
+        }
+        searched.setNome(body.nome());
+        searched.setCognome(body.cognome());
+        return utenteRepository.save(searched);
+    }
+
+    public void modificaPassword(UUID utenteId, CambioPasswordDTO richiesta) {
+        Utente utente = utenteRepository.findById(utenteId)
+                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
+
+
+        if (!bcrypt.matches(richiesta.passwordAttuale(), utente.getPassword())) {
+            throw new BadRequestException("La password attuale non è corretta.");
+        }
+
+        if (!richiesta.nuovaPassword().equals(richiesta.confermaNuovaPassword())) {
+            throw new BadRequestException("La nuova password e la conferma non coincidono.");
+        }
+
+        utente.setPassword(bcrypt.encode(richiesta.nuovaPassword()));
+        utenteRepository.save(utente);
+    }
+
+
+
 
     public Utente aggiungiRuolo(RuoloUtenteDTO body, UUID utenteId) {
         Utente cercato = findUtenteById(utenteId);

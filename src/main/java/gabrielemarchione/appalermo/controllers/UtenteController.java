@@ -1,11 +1,14 @@
 package gabrielemarchione.appalermo.controllers;
 
 
+import gabrielemarchione.appalermo.dto.CambioPasswordDTO;
 import gabrielemarchione.appalermo.dto.RuoloUtenteDTO;
 import gabrielemarchione.appalermo.dto.UtenteDTO;
+import gabrielemarchione.appalermo.dto.UtenteLoggatoDTO;
 import gabrielemarchione.appalermo.entities.Utente;
 import gabrielemarchione.appalermo.exceptions.BadRequestException;
 import gabrielemarchione.appalermo.services.UtenteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -41,22 +44,36 @@ public class UtenteController {
         utenteService.deleteUtente(utenteId);
     }
 
+
+
+
     @GetMapping("/me")
     public Utente getLoggedUtente(@AuthenticationPrincipal Utente loggato) {
         return loggato;
     }
 
-    @PutMapping("/me")
+    @PatchMapping("/me")
     public Utente modificaUtenteLoggato(@AuthenticationPrincipal Utente loggato,
-                                        @RequestBody @Validated UtenteDTO body, BindingResult bindingResult) {
+                                        @RequestBody @Validated UtenteLoggatoDTO body, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message =
                     bindingResult.getAllErrors().stream().map(s -> s.getDefaultMessage()).collect(Collectors.joining(
                             ", "));
             throw new BadRequestException(message);
         }
-        return utenteService.modifiyUtenteAndUpdate(loggato.getUtenteId(), body);
+        return utenteService.modifiyUtenteLoggatoAndUpdate(loggato.getUtenteId(), body);
     }
+
+    @PatchMapping("/me/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void modificaPassword(
+            @AuthenticationPrincipal Utente utenteLoggato,
+            @RequestBody @Valid CambioPasswordDTO richiesta) {
+
+        utenteService.modificaPassword(utenteLoggato.getUtenteId(), richiesta);
+    }
+
+
 
     @PatchMapping("/me/avatar")
     public String uploadFotoProfilo(@AuthenticationPrincipal Utente loggato, @RequestParam("foto") MultipartFile file) {

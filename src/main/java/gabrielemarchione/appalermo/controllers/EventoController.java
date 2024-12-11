@@ -52,7 +52,7 @@ public class EventoController {
         return eventoService.findAllEventoByOrganizzatore(organizzatore);
     }
 
-    @PutMapping("/imieieventi/{eventoId}")
+    @PatchMapping("/imieieventi/{eventoId}")
     @PreAuthorize("hasAnyAuthority('ORGANIZZATORE','ADMIN')")
     public Evento modifyEvent(@AuthenticationPrincipal Utente organizzatore, @RequestBody @Validated EventoDTO body,
                              BindingResult bindingResult, @PathVariable UUID eventoId) {

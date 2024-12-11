@@ -26,6 +26,7 @@ public class JWT {
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 12)) //12h
                 .subject(String.valueOf(utente.getUtenteId()))
                 .claim("nome", utente.getNome())
+                .claim("cognome", utente.getCognome())
                 .claim("ruoli", utente.getRuoli().stream().map(RuoloUtente::getNome).collect(Collectors.toList()))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();

@@ -3,6 +3,8 @@
 
     import com.fasterxml.jackson.annotation.JsonIgnore;
     import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+    import com.fasterxml.jackson.annotation.JsonInclude;
+    import com.fasterxml.jackson.annotation.JsonProperty;
     import jakarta.persistence.*;
     import lombok.AccessLevel;
     import lombok.Data;
@@ -22,7 +24,7 @@
     @NoArgsConstructor
     @Entity
     @Table (name= "utenti")
-    @JsonIgnoreProperties({"accountNonLocked", "accountNonExpired", "credentialsNonExpired", "enabled", "authorities", "password", "username"})
+    @JsonIgnoreProperties({"accountNonLocked", "accountNonExpired", "credentialsNonExpired", "enabled", "authorities"})
     public class Utente implements UserDetails {
         @Id
         @GeneratedValue
@@ -30,7 +32,20 @@
         @Column(name = "utente_id")
         private UUID utenteId;
         @Column(nullable = false)
-        private String username, email, password, nome, cognome;
+        @JsonIgnore
+        private String username;
+        @Column(nullable = false)
+        private String email;
+        @Column(nullable = false)
+        @JsonIgnore
+        private String password;
+        @Column (nullable = false)
+        private String  nome;
+        @Column(nullable = false)
+        private String cognome;
+
+
+
         @Column (name = "avatar_url", nullable = false)
         private String avatarUrl;
 
@@ -84,7 +99,12 @@
                     ", ruoli=" + ruoli +
                     '}';
         }
-
+        // Getter visibile solo su richiesta
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        @JsonProperty("username")
+        public String getVisibleUsername() {
+            return username;
+        }
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return ruoli.stream().map(ruoloUtente -> new SimpleGrantedAuthority(ruoloUtente.getNome())).toList();
