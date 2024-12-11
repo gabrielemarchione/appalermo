@@ -19,7 +19,6 @@ public class JWT {
     private String secret;
 
     public String generaToken(Utente utente) {
-        // mi recupero i ruoli di quell'utente
 
         return Jwts.builder()
                 .issuedAt(new Date(System.currentTimeMillis()))
