@@ -39,6 +39,7 @@ public class PrenotazioneService {
     public Prenotazione savePrenotazione(PrenotazioneDTO body, Utente currentUtente) {
         Evento evento = eventoService.getEventoById(body.eventoId());
         int postiOccupati = prenotazioneRepository.controllaPostiOccupatiByEvento(evento);
+
         if (evento.getPostiMassimi() - postiOccupati < body.postiPrenotati())
             throw new BadRequestException("non ci sono abbastanza posti disponibili");
         if (evento.getOrganizzatore().getUtenteId().equals(currentUtente.getUtenteId()))

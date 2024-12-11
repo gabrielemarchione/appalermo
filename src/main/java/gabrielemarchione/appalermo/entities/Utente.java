@@ -99,7 +99,7 @@
                     ", ruoli=" + ruoli +
                     '}';
         }
-        // Getter visibile solo su richiesta
+
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonProperty("username")
         public String getVisibleUsername() {

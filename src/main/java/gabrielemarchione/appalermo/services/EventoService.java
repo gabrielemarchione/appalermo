@@ -63,8 +63,14 @@ public class EventoService {
 
     public Evento findEventoByIdAndUpdate(EventoDTO body, UUID eventoId, Utente organizzatore) {
         Evento cercato = getEventoById(eventoId);
-        if (!cercato.getOrganizzatore().getUtenteId().equals(organizzatore.getUtenteId()))
+
+        boolean isAdmin = organizzatore.getRuoli().stream()
+                .anyMatch(ruolo -> ruolo.getNome().equals("ADMIN"));
+
+        if (!isAdmin && !cercato.getOrganizzatore().getUtenteId().equals(organizzatore.getUtenteId())) {
             throw new AuthDeniedException("Non sei autorizzato a modificare l'evento");
+        }
+
         cercato.setData(validateDate(body.data()));
         cercato.setDescrizione(body.descrizione());
         cercato.setTitolo(body.titolo());
@@ -74,10 +80,13 @@ public class EventoService {
     }
     public void deleteEvento(UUID eventoId, Utente organizzatore) {
         Evento cercato =  getEventoById(eventoId);
-        if (!cercato.getOrganizzatore().getUtenteId().equals(organizzatore.getUtenteId()))
-            throw new AuthDeniedException("Non sei autorizzato a cancellare l'evento");
-        /*if (cercato.getPrenotazioni() != null)
-            throw new BadRequestException("Ci sono già prenotazioni, non puoi cancellare l'evento");*/
+
+        boolean isAdmin = organizzatore.getRuoli().stream()
+                .anyMatch(ruolo -> ruolo.getNome().equals("ADMIN"));
+
+        if (!isAdmin && !cercato.getOrganizzatore().getUtenteId().equals(organizzatore.getUtenteId())) {
+            throw new AuthDeniedException("Non sei autorizzato a modificare l'evento");
+        }
         eventoRepository.delete(cercato);
     }
 }
