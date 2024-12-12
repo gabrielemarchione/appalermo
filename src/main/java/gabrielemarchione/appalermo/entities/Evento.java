@@ -56,9 +56,9 @@ public class Evento {
     @OneToMany (mappedBy = "evento")
     private List<Feedback> feedbacks;
 
-    public Evento(String descrizione, String titolo, LocalDate data, String luogo, double costo, int postiMassimi, int postiDisponibili, CategoriaEvento categoriaEvento, Utente organizzatore) {
-        this.descrizione = descrizione;
+    public Evento( String titolo,String descrizione, LocalDate data, String luogo, double costo, int postiMassimi, int postiDisponibili, CategoriaEvento categoriaEvento, Utente organizzatore) {
         this.titolo = titolo;
+        this.descrizione = descrizione;
         this.data = data;
         this.luogo = luogo;
         this.costo = costo;

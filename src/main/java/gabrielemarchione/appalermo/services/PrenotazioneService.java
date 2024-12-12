@@ -53,7 +53,11 @@ public class PrenotazioneService {
 
     public void cancellaPrenotazioneById(UUID prenotazioneId, Utente utente) {
         Prenotazione prenotazione = findPrenotazioneById(prenotazioneId);
-        if (!prenotazione.getUtente().getUtenteId().equals(utente.getUtenteId()))
+
+        boolean isAdmin = utente.getRuoli().stream()
+                .anyMatch(ruolo -> ruolo.getNome().equals("ADMIN"));
+
+        if (!isAdmin && !prenotazione.getUtente().getUtenteId().equals(utente.getUtenteId()))
             throw new AuthDeniedException("Non sei autorizzato a cancellare questa prenotazione");
         prenotazioneRepository.delete(prenotazione);
     }
