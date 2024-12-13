@@ -26,6 +26,8 @@ public class EventoService {
     private EventoRepository eventoRepository;
     @Autowired
     private List<DateTimeFormatter> formatters;
+    @Autowired
+    private UnsplashService unsplashService;
 
     public Page<Evento> findAllEvento(int page, int size,String sortBy){
         Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
@@ -48,11 +50,32 @@ public class EventoService {
         }
         throw new BadRequestException("Format date not supported");
     }
-    public Evento saveEvento (EventoDTO body, Utente organizzatore){
+    public Evento saveEvento(EventoDTO body, Utente organizzatore) {
         LocalDate data = validateDate(body.data());
-        return eventoRepository.save(new Evento(body.titolo(), body.descrizione(),data, body.luogo(), body.costo(),
-                 body.postiMassimi(), body.postiDisponibili(), body.categoriaEvento(), organizzatore));
+
+        // Genera l'immagine se non fornita
+        String immagine = body.immagine();
+        if (immagine == null || immagine.isBlank()) {
+            immagine = unsplashService.getImageByCategory(body.categoriaEvento());
+        }
+
+        Evento nuovoEvento = new Evento(
+                body.titolo(),
+                body.descrizione(),
+                data,
+                body.luogo(),
+                body.costo(),
+                body.postiMassimi(),
+                body.postiDisponibili(),
+                body.categoriaEvento(),
+                immagine,
+                organizzatore
+
+        );
+
+        return eventoRepository.save(nuovoEvento);
     }
+
 
     public List<Evento> findAllEventoByOrganizzatore(Utente organizzatore) {
         if (organizzatore.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ADMIN"))){
@@ -89,4 +112,14 @@ public class EventoService {
         }
         eventoRepository.delete(cercato);
     }
+    public Evento updateEvento(Evento evento) {
+        // Verifica che l'evento esista nel database
+        if (!eventoRepository.existsById(evento.getEventoId())) {
+            throw new NotFoundException("Evento con ID " + evento.getEventoId() + " non trovato");
+        }
+
+        // Salva l'evento aggiornato
+        return eventoRepository.save(evento);
+    }
+
 }

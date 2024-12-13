@@ -23,7 +23,8 @@ public record EventoDTO(
         @Min(value = 0, message = "I posti disponibili non possono essere negativi")
         int postiDisponibili,
         @NotNull(message = "La categoria dell'evento deve essere fornita")
-        CategoriaEvento categoriaEvento
+        CategoriaEvento categoriaEvento,
+        String immagine
         )
 {
 }

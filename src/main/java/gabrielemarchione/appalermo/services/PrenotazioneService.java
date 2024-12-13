@@ -44,6 +44,10 @@ public class PrenotazioneService {
             throw new BadRequestException("non ci sono abbastanza posti disponibili");
         if (evento.getOrganizzatore().getUtenteId().equals(currentUtente.getUtenteId()))
             throw new UnauthorizedException("l'organizzatore non puà fare una prenotazione per il suo evento");
+
+        evento.setPostiDisponibili(evento.getPostiDisponibili() - body.postiPrenotati());
+        eventoService.updateEvento(evento); // Salva l'aggiornamento nel db
+
         return prenotazioneRepository.save(new Prenotazione(body.postiPrenotati(), currentUtente, evento));
     }
 
@@ -59,6 +63,12 @@ public class PrenotazioneService {
 
         if (!isAdmin && !prenotazione.getUtente().getUtenteId().equals(utente.getUtenteId()))
             throw new AuthDeniedException("Non sei autorizzato a cancellare questa prenotazione");
+
+        // Aggiorna i posti disponibili nell'evento
+        Evento evento = prenotazione.getEvento();
+        evento.setPostiDisponibili(evento.getPostiDisponibili() + prenotazione.getPostiPrenotati());
+        eventoService.updateEvento(evento); // Salva l'evento aggiornato
+
         prenotazioneRepository.delete(prenotazione);
     }
 

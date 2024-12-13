@@ -42,7 +42,7 @@ public class Evento {
     private int postiDisponibili;
     @Enumerated(EnumType.STRING)
     private CategoriaEvento categoriaEvento;
-
+ private String immagine;
 
     @ManyToOne
     @JoinColumn(name = "organizzatore_id", nullable = false)
@@ -56,7 +56,7 @@ public class Evento {
     @OneToMany (mappedBy = "evento")
     private List<Feedback> feedbacks;
 
-    public Evento( String titolo,String descrizione, LocalDate data, String luogo, double costo, int postiMassimi, int postiDisponibili, CategoriaEvento categoriaEvento, Utente organizzatore) {
+    public Evento( String titolo,String descrizione, LocalDate data, String luogo, double costo, int postiMassimi, int postiDisponibili, CategoriaEvento categoriaEvento, String immagine, Utente organizzatore) {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.data = data;
@@ -65,6 +65,7 @@ public class Evento {
         this.postiMassimi = postiMassimi;
         this.postiDisponibili = postiDisponibili;
         this.categoriaEvento = categoriaEvento;
+        this.immagine = immagine;
         this.organizzatore = organizzatore;
     }
 

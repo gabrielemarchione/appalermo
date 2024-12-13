@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface PrenotazioneRepository extends JpaRepository<Prenotazione, UUID> {
     List<Prenotazione> findByUtente(Utente utente);
 
-    @Query("SELECT COUNT(p.postiPrenotati) FROM Prenotazione p WHERE p.evento = :evento")
+    @Query("SELECT COALESCE(SUM(p.postiPrenotati), 0) FROM Prenotazione p WHERE p.evento = :evento")
     int controllaPostiOccupatiByEvento(Evento evento);
+
 }
