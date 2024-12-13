@@ -3,6 +3,7 @@ package gabrielemarchione.appalermo.services;
 import gabrielemarchione.appalermo.dto.EventoDTO;
 import gabrielemarchione.appalermo.entities.Evento;
 import gabrielemarchione.appalermo.entities.Utente;
+import gabrielemarchione.appalermo.entities.enums.CategoriaEvento;
 import gabrielemarchione.appalermo.exceptions.AuthDeniedException;
 import gabrielemarchione.appalermo.exceptions.BadRequestException;
 import gabrielemarchione.appalermo.exceptions.NotFoundException;
@@ -29,10 +30,11 @@ public class EventoService {
     @Autowired
     private UnsplashService unsplashService;
 
-    public Page<Evento> findAllEvento(int page, int size,String sortBy){
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
-        return eventoRepository.findAll(pageable);
+    public Page<Evento> findAllEvento(String titolo, LocalDate data, CategoriaEvento categoriaEvento, Double costo, int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return eventoRepository.findFilteredEvents(titolo, data, categoriaEvento, costo, pageable);
     }
+
 
     public Evento getEventoById(UUID eventoId) {
         return eventoRepository.findById(eventoId).orElseThrow(() -> new NotFoundException("evento non trovato", eventoId));
@@ -113,13 +115,15 @@ public class EventoService {
         eventoRepository.delete(cercato);
     }
     public Evento updateEvento(Evento evento) {
-        // Verifica che l'evento esista nel database
+
         if (!eventoRepository.existsById(evento.getEventoId())) {
             throw new NotFoundException("Evento con ID " + evento.getEventoId() + " non trovato");
         }
-
-        // Salva l'evento aggiornato
         return eventoRepository.save(evento);
+    }
+    public List<Evento> findEventiCarosello(int limit) {
+        Pageable pageable = PageRequest.of(0, limit, Sort.by("data").ascending());
+        return eventoRepository.findAll(pageable).getContent();
     }
 
 }
