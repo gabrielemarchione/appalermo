@@ -1,6 +1,7 @@
 package gabrielemarchione.appalermo.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gabrielemarchione.appalermo.entities.enums.CategoriaEvento;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -36,33 +37,50 @@ public class Evento {
     @Column
     private double costo;
     @Column
-    private int posti_massimi;
+    private int postiMassimi;
+    @Column
+    private int postiDisponibili;
     @Enumerated(EnumType.STRING)
     private CategoriaEvento categoriaEvento;
+ private String immagine;
 
     @ManyToOne
-    @JoinColumn(name = "utente_id", nullable = false)
-    private Utente utente;
+    @JoinColumn(name = "organizzatore_id", nullable = false)
+    private Utente organizzatore;
+
 
     @OneToMany(mappedBy = "evento" )
+    @JsonIgnore
     private List<Prenotazione> prenotazioni;
-
-    @OneToMany(mappedBy = "evento")
-    private List <Biglietto> biglietti;
 
     @OneToMany (mappedBy = "evento")
     private List<Feedback> feedbacks;
 
-    public Evento(String descrizione, String titolo, LocalDate data, String luogo, double costo, int posti_massimi, CategoriaEvento categoriaEvento, Utente utente) {
-        this.descrizione = descrizione;
+    public Evento( String titolo,String descrizione, LocalDate data, String luogo, double costo, int postiMassimi, int postiDisponibili, CategoriaEvento categoriaEvento, String immagine, Utente organizzatore) {
         this.titolo = titolo;
+        this.descrizione = descrizione;
         this.data = data;
         this.luogo = luogo;
         this.costo = costo;
-        this.posti_massimi = posti_massimi;
+        this.postiMassimi = postiMassimi;
+        this.postiDisponibili = postiDisponibili;
         this.categoriaEvento = categoriaEvento;
-        this.utente = utente;
+        this.immagine = immagine;
+        this.organizzatore = organizzatore;
     }
 
-
+    @Override
+    public String toString() {
+        return "Evento{" +
+                "eventoId=" + eventoId +
+                ", titolo='" + titolo + '\'' +
+                ", descrizione='" + descrizione + '\'' +
+                ", data=" + data +
+                ", luogo='" + luogo + '\'' +
+                ", costo=" + costo +
+                ", postiMassimi=" + postiMassimi +
+                ", categoriaEvento=" + categoriaEvento +
+                ", organizzatore=" + organizzatore +
+                '}';
+    }
 }
