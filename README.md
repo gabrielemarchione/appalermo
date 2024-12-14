@@ -67,6 +67,9 @@ Segui questi passaggi per mettere in piedi il progetto in locale:
 
 ---
 
+## 🔗 **Link Utili**
+- [Repository Frontend](https://github.com/gabrielemarchione/front-end-app)
+
 ## 🔸 **Autore**
 Sviluppata con ❤️ da:
 - **Gabriele Marchione**
