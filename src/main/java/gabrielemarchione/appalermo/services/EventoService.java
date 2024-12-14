@@ -30,9 +30,13 @@ public class EventoService {
     @Autowired
     private UnsplashService unsplashService;
 
-    public Page<Evento> findAllEvento(String titolo, LocalDate data, CategoriaEvento categoriaEvento, Double costo, int page, int size, String sortBy) {
+    public Page<Evento> findAllEvento(String titolo, LocalDate data, CategoriaEvento categoriaEvento, Double costo, String organizzatore, int page, int size, String sortBy) {
+        System.out.println("Data ricevuta nel service: " + data);
+
+
+
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return eventoRepository.findFilteredEvents(titolo, data, categoriaEvento, costo, pageable);
+        return eventoRepository.findFilteredEvents(titolo, data, categoriaEvento, costo, organizzatore, pageable);
     }
 
 
@@ -65,6 +69,7 @@ public class EventoService {
                 body.titolo(),
                 body.descrizione(),
                 data,
+                body.orarioInizio(),
                 body.luogo(),
                 body.costo(),
                 body.postiMassimi(),
@@ -125,5 +130,10 @@ public class EventoService {
         Pageable pageable = PageRequest.of(0, limit, Sort.by("data").ascending());
         return eventoRepository.findAll(pageable).getContent();
     }
+    public List<Evento> findEventiCaroselloSecondo(int start, int limit) {
+        Pageable pageable = PageRequest.of(start / limit, limit, Sort.by("data").ascending());
+        return eventoRepository.findAll(pageable).getContent();
+    }
+
 
 }

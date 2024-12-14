@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +33,8 @@ public class Evento {
     private String descrizione;
     @Column
     private LocalDate data;
+    @Column
+    private LocalDateTime orarioInizio;
     @Column
     private String luogo;
     @Column
@@ -56,10 +59,11 @@ public class Evento {
     @OneToMany (mappedBy = "evento")
     private List<Feedback> feedbacks;
 
-    public Evento( String titolo,String descrizione, LocalDate data, String luogo, double costo, int postiMassimi, int postiDisponibili, CategoriaEvento categoriaEvento, String immagine, Utente organizzatore) {
+    public Evento( String titolo,String descrizione, LocalDate data,LocalDateTime orarioInizio, String luogo, double costo, int postiMassimi, int postiDisponibili, CategoriaEvento categoriaEvento, String immagine, Utente organizzatore) {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.data = data;
+        this.orarioInizio = orarioInizio;
         this.luogo = luogo;
         this.costo = costo;
         this.postiMassimi = postiMassimi;

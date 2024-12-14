@@ -88,23 +88,8 @@
             this.ruoli.add(ruoloUtente);
         }
 
-        @Override
-        public String toString() {
-            return "Utente{" +
-                    "utenteId=" + utenteId +
-                    ", username='" + username + '\'' +
-                    ", nome='" + nome + '\'' +
-                    ", cognome='" + cognome + '\'' +
-                    ", email='" + email + '\'' +
-                    ", ruoli=" + ruoli +
-                    '}';
-        }
 
-        @JsonInclude(JsonInclude.Include.NON_NULL)
-        @JsonProperty("username")
-        public String getVisibleUsername() {
-            return username;
-        }
+
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return ruoli.stream().map(ruoloUtente -> new SimpleGrantedAuthority(ruoloUtente.getNome())).toList();

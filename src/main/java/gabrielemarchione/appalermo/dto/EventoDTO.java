@@ -3,6 +3,9 @@ package gabrielemarchione.appalermo.dto;
 import gabrielemarchione.appalermo.entities.enums.CategoriaEvento;
 import jakarta.validation.constraints.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 public record EventoDTO(
         @NotEmpty(message = "Il titolo deve essere fornito")
@@ -13,6 +16,8 @@ public record EventoDTO(
         String descrizione,
         @NotEmpty(message = "La data dell'evento è obbligatoria!")
         String data,
+        @NotNull(message = "La data e ora dell'evento sono obbligatorie!")
+        LocalDateTime orarioInizio,
         @NotEmpty(message = "Il luogo deve essere fornito")
         @Size(min = 3, max = 255, message = "Il luogo deve avere più di 2 caratteri")
         String luogo,

@@ -10,7 +10,7 @@ import gabrielemarchione.appalermo.services.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,14 +32,15 @@ public class EventoController {
     @GetMapping
     public Page<Evento> getAllEvento(
             @RequestParam(required = false) String titolo,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
+            @RequestParam(required = false) LocalDate data,
             @RequestParam(required = false) CategoriaEvento categoriaEvento,
             @RequestParam(required = false) Double costo,
+            @RequestParam(value = "organizzatore", required = false) String organizzatore,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "data") String sortBy) {
 
-        return eventoService.findAllEvento(titolo, data, categoriaEvento, costo, page, size, sortBy);
+        return eventoService.findAllEvento(titolo, data, categoriaEvento, costo, organizzatore, page, size, sortBy);
     }
 
 
@@ -85,5 +86,12 @@ public class EventoController {
     public List<Evento> getCarouselEvents() {
         return eventoService.findEventiCarosello(3);
     }
+
+    @GetMapping("/carosello-secondo")
+    public List<Evento> getSecondCarouselEvents(@RequestParam(defaultValue = "4") int start,
+                                                @RequestParam(defaultValue = "4") int limit) {
+        return eventoService.findEventiCaroselloSecondo(start,limit );  // Fetch dal 4° al 7°
+    }
+
 
 }

@@ -50,7 +50,8 @@ public class CheckerFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return new AntPathMatcher().match("/auth/**", request.getServletPath()) ||
                 new AntPathMatcher().match("/evento", request.getServletPath()) ||
-                new AntPathMatcher().match("/evento/carosello", request.getServletPath()) ;
+                new AntPathMatcher().match("/evento/carosello", request.getServletPath()) ||
+                new AntPathMatcher().match("/evento/carosello-secondo", request.getServletPath());
     }
 
 }
