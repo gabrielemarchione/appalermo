@@ -2,6 +2,7 @@ package gabrielemarchione.appalermo.dto;
 
 import gabrielemarchione.appalermo.entities.enums.CategoriaEvento;
 import jakarta.validation.constraints.*;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

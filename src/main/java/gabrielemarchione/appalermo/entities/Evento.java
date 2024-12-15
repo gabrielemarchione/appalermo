@@ -31,7 +31,7 @@ public class Evento {
     private String titolo;
     @Column
     private String descrizione;
-    @Column
+    @Column(name = "data")
     private LocalDate data;
     @Column
     private LocalDateTime orarioInizio;
@@ -43,6 +43,7 @@ public class Evento {
     private int postiMassimi;
     @Column
     private int postiDisponibili;
+
     @Enumerated(EnumType.STRING)
     private CategoriaEvento categoriaEvento;
  private String immagine;

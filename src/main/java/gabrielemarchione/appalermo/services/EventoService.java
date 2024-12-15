@@ -8,6 +8,7 @@ import gabrielemarchione.appalermo.exceptions.AuthDeniedException;
 import gabrielemarchione.appalermo.exceptions.BadRequestException;
 import gabrielemarchione.appalermo.exceptions.NotFoundException;
 import gabrielemarchione.appalermo.repositories.EventoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,8 +19,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EventoService {
@@ -32,7 +35,6 @@ public class EventoService {
 
     public Page<Evento> findAllEvento(String titolo, LocalDate data, CategoriaEvento categoriaEvento, Double costo, String organizzatore, int page, int size, String sortBy) {
         System.out.println("Data ricevuta nel service: " + data);
-
 
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
@@ -127,13 +129,24 @@ public class EventoService {
         return eventoRepository.save(evento);
     }
     public List<Evento> findEventiCarosello(int limit) {
-        Pageable pageable = PageRequest.of(0, limit, Sort.by("data").ascending());
-        return eventoRepository.findAll(pageable).getContent();
+        List<Evento> allEventi = eventoRepository.findAll();
+        Collections.shuffle(allEventi);
+        return allEventi.stream().limit(limit).collect(Collectors.toList());
     }
-    public List<Evento> findEventiCaroselloSecondo(int start, int limit) {
-        Pageable pageable = PageRequest.of(start / limit, limit, Sort.by("data").ascending());
-        return eventoRepository.findAll(pageable).getContent();
+    public List<Evento> findEventiCaroselloSecondo(int limit) {
+        List<Evento> allEventi = eventoRepository.findAll();
+        Collections.shuffle(allEventi);
+        return allEventi.stream().limit(limit).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteEventiPassati() {
+        LocalDate today = LocalDate.now();
+        eventoRepository.deleteEventiPassati(today);
     }
 
 
 }
+
+
+

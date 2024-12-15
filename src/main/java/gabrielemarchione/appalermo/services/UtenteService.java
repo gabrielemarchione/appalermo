@@ -111,6 +111,7 @@ public class UtenteService {
         }
         searched.setNome(body.nome());
         searched.setCognome(body.cognome());
+        searched.setUsername(body.username());
         return utenteRepository.save(searched);
     }
 

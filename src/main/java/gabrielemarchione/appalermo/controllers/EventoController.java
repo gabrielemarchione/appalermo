@@ -32,13 +32,14 @@ public class EventoController {
     @GetMapping
     public Page<Evento> getAllEvento(
             @RequestParam(required = false) String titolo,
-            @RequestParam(required = false) LocalDate data,
+            @RequestParam(required = false, value = "data") LocalDate data,
             @RequestParam(required = false) CategoriaEvento categoriaEvento,
             @RequestParam(required = false) Double costo,
             @RequestParam(value = "organizzatore", required = false) String organizzatore,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "4") int size,
             @RequestParam(defaultValue = "data") String sortBy) {
+        eventoService.deleteEventiPassati();
 
         return eventoService.findAllEvento(titolo, data, categoriaEvento, costo, organizzatore, page, size, sortBy);
     }
@@ -85,12 +86,13 @@ public class EventoController {
     @GetMapping("/carosello")
     public List<Evento> getCarouselEvents() {
         return eventoService.findEventiCarosello(3);
+    public List<Evento> getCarouselEvents(@RequestParam(defaultValue = "5") int limit) {
+        return eventoService.findEventiCarosello(limit);
     }
 
     @GetMapping("/carosello-secondo")
-    public List<Evento> getSecondCarouselEvents(@RequestParam(defaultValue = "4") int start,
-                                                @RequestParam(defaultValue = "4") int limit) {
-        return eventoService.findEventiCaroselloSecondo(start,limit );  // Fetch dal 4° al 7°
+    public List<Evento> getSecondCarouselEvents(@RequestParam(defaultValue = "10") int limit) {
+        return eventoService.findEventiCaroselloSecondo(limit);
     }
 
 

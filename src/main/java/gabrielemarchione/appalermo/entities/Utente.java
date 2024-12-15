@@ -3,8 +3,6 @@
 
     import com.fasterxml.jackson.annotation.JsonIgnore;
     import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-    import com.fasterxml.jackson.annotation.JsonInclude;
-    import com.fasterxml.jackson.annotation.JsonProperty;
     import jakarta.persistence.*;
     import lombok.AccessLevel;
     import lombok.Data;
@@ -32,7 +30,7 @@
         @Column(name = "utente_id")
         private UUID utenteId;
         @Column(nullable = false)
-        @JsonIgnore
+
         private String username;
         @Column(nullable = false)
         private String email;
@@ -52,7 +50,6 @@
 
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "utenti_ruoli", joinColumns = @JoinColumn(name = "utente_id"), inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
-        @Setter (AccessLevel.NONE)
         private List<RuoloUtente>ruoli;
 
         @OneToMany(mappedBy = "utente")

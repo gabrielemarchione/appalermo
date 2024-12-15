@@ -24,6 +24,7 @@ public class JWT {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 12)) //12h
                 .subject(String.valueOf(utente.getUtenteId()))
+                .claim("username", utente.getUsername())
                 .claim("nome", utente.getNome())
                 .claim("cognome", utente.getCognome())
                 .claim("ruoli", utente.getRuoli().stream().map(RuoloUtente::getNome).collect(Collectors.toList()))

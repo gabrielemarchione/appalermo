@@ -25,7 +25,7 @@ public class UnsplashController {
             String keyword = categoria.getKeyword();
 
             // Costruisce l'URL per Unsplash
-            String url = "https://api.unsplash.com/photos/random?query=" + keyword + "&client_id=YOUR_API_KEY";
+            String url = "https://api.unsplash.com/photos/random?query=" + keyword + "&w=1920&h=1080&client_id=YOUR_API_KEY";
 
             // Passa l'enum
             return unsplashService.getImageByCategory(categoria);
